@@ -1,0 +1,248 @@
+1.)_select dept.deptno from dept inner join emp on dept.deptno=emp.deptno;
+2.)_select d.deptno from dept d inner join emp e on d.deptno=e.deptno;
+3.)_
+SELECT 
+	Dd.Deptno,
+	Dd.Dname,
+	Ed.Empno ,
+	Ed.Ename
+	FROM
+		(select deptno,dname,loc from dept) Dd,
+		(select empno,ename,sal,deptno from emp) Ed 
+	WHERE Dd.DEPTNO=Ed.DEPTNO;
+
+
+
+
+SELECT 
+	Dd.Deptno,
+	Dd.Dname,
+	Ed.Empno ,
+	Ed.Ename,
+	Ed.Sal,
+	Ed.incsal
+	FROM
+		(select deptno,dname,loc from dept) Dd,
+		(select empno,ename,sal,deptno,sal+1000 incsal from emp) Ed 
+	WHERE Dd.DEPTNO=Ed.DEPTNO and Ed.incsal>3000;
+
+
+
+SELECT MARITALSTATUS,
+	CASE MARITALSTATUS 
+	WHEN 0 THEN 'UNMARRIED'
+	ELSE 'MARRIED'
+	END "STATUS"
+FROM Agent;
+
+
+
+
+ SELECT POLICYID,
+       CASE POLICYID
+        WHEN 1 THEN 'YEARLY'
+        WHEN 2 THEN 'HALF'
+	WHEN 3 THEN 'QQ'
+        ELSE 'quaterly'
+        END "dd"
+       FROM AGENTPOLICY;
+   --------------------------INNER JOIN--------------------------------
+
+SELECT
+	A.AGENTID,FIRSTNAME,LASTNAME,CITY,SSN,
+	P.POLICYID,ANNUALPREMIUM,MODALPREMIUM
+FROM
+AGENT A INNER JOIN AGENTPOLICY AP
+ON A.AGENTID=AP.AGENTID INNER JOIN POLICY P ON P.POLICYID=AP.POLICYID;
+
+
+
+--------------------------LEFT JOIN------------------------------------
+
+
+SELECT
+	A.AGENTID,FIRSTNAME,CITY,
+	P.POLICYID,ANNUALPREMIUM,MODALPREMIUM
+FROM
+AGENT A LEFT JOIN AGENTPOLICY AP
+ON A.AGENTID=AP.AGENTID LEFT JOIN POLICY P ON P.POLICYID=AP.POLICYID;
+
+
+
+
+-----------------------RIGHT JOIN-------------------------------------
+
+
+
+DIPLAYS ALL FROM RIGHT SIDE OF THE TABLE
+
+
+SELECT
+	A.AGENTID,FIRSTNAME,CITY,
+	P.POLICYID,ANNUALPREMIUM,MODALPREMIUM
+FROM
+AGENT A RIGHT JOIN AGENTPOLICY AP
+ON A.AGENTID=AP.AGENTID RIGHT JOIN POLICY P ON P.POLICYID=AP.POLICYID;
+
+
+
+------------------------FULL OUTER JOIN-------------------------------
+
+
+
+
+ALL MATCHING AND UNMATCHING RECORDS FROM BOTH THE TABLE
+
+SELECT
+	A.AGENTID,FIRSTNAME,CITY,
+	P.POLICYID,ANNUALPREMIUM,MODALPREMIUM
+FROM
+AGENT A FULL JOIN AGENTPOLICY AP
+ON A.AGENTID=AP.AGENTID FULL JOIN POLICY P ON P.POLICYID=AP.POLICYID;
+
+
+
+
+---------------------------CROSS JOIN----------------------------------
+GENERATE THE SIMPLE CARTESIAN PRODUCT
+
+SELECT * FORM DEPT CROSS JOIN EMP;
+
+
+----------------------SELF JOIN ---------------------------------------
+
+IF A TABLE JOINS WITH ITSELF ,THEN IT KNOWN AS 
+
+SELECT  E1.ENAME,E2.EMPNO,E2.ENAME FROM EMP E1 INNER JOIN EMP E2 ON E1.EMPNO=E2.MGR ORDER BY E1.ENAME;
+
+
+
+
+-----------------------UNION AND UNION ALL---------------------------------------------------
+SELECT EMPNO,ENAME ,SAL FROM EMP WHERE SAL BETWEEN 2000 AND 4000
+UNION 
+SELECT EMPNO,ENAME ,SAL FROM EMP WHERE SAL BETWEEN 3000 AND 5000;
+
+SELECT EMPNO,ENAME ,SAL FROM EMP WHERE SAL BETWEEN 2000 AND 4000
+UNION ALL
+SELECT EMPNO,ENAME ,SAL FROM EMP WHERE SAL BETWEEN 3000 AND 5000;
+
+-------------------------INTERSECT------------------------------
+COMMON PRODUCT
+
+SELECT EMPNO,ENAME ,SAL FROM EMP WHERE SAL BETWEEN 2000 AND 4000
+INTERSECT
+SELECT EMPNO,ENAME ,SAL FROM EMP WHERE SAL BETWEEN 3000 AND 5000;
+
+------------------------MINUS------------------------------------
+ONLY UNIQUE FROM LEFT TABLE 
+
+SELECT EMPNO,ENAME ,SAL FROM EMP WHERE SAL BETWEEN 2000 AND 4000
+MINUS
+SELECT EMPNO,ENAME ,SAL FROM EMP WHERE SAL BETWEEN 3000 AND 5000;
+
+
+------------------------------SUB-QUERY----------------------------
+SOME TIMES NOT POSSIBLE TO EXTRACT DATA FROM SINGLE SELECT STATEMENT THAT TIME 
+WE MULTIPLE SELECT INSIDE A QUERY THAT  IS CALLED SUBQUERY.
+
+
+
+QQ-- DISPLAY THE NAME OF EMPOLYEE WHO IS GETTING MAX SALARY .
+	SELECT ENAME FROM EMP 
+		WHERE
+		SAL=(SELECT MAX(SAL) 
+
+
+
+----------------------------------------------------------------------------------------
+
+IF SUBQUERY RETURNS ALL ACTS AS and OPERATOR ,ANY ACTS AS ANY OPERATOR
+
+
+
+
+------------------------NTH SALARY-----------------------------------------------------
+
+SELECT ENAME FROM (SELECT ENAME ,DENSE_RANK() OVER (ORDER BY SAL) AS NUM  FROM EMP) WHERE NUM=2 ;
+
+use corelated subquery for nth salary;
+
+
+-------------------
+SELECT * FROM AGENT WHERE AGENTID<>(SELECT AGENTID FROM AGENTPOLICY);
+
+
+
+--------------------------CREATING TABLE-----------------------------------------------
+create table employenew
+(
+	Employ Number,
+    	Name varchar2(50), 
+	gender varchar2(10),
+    	Dept varchar2(30),
+    	Desig varchar2(30),
+    	Basic Number(9,2)
+);
+
+
+create table employenew
+(
+	Empno Number CONSTRAINT PK_EMPLOYENEW_EMPNO PRIMARY KEY,
+    	Name varchar2(50) NOT NULL, 
+
+	gender varchar2(30) CONSTRAINT CHK_EMPLOYENEW_gender
+	CHECK(gender IN('male','female')),
+
+    	Dept varchar2(30) CONSTRAINT CHK_EMPLOYENEW_DEPT
+	CHECK(DEPT IN('Dotnet','Java','Testing')),	
+
+    	Design varchar2(30),
+	Design varchar2(30) CONSTRAINT CHK_EMPLOYENEW_DESIGN
+	CHECK(Design IN('SWE','TeamLead','Manager')),
+
+    	Basic Number(9,2) CONSTRAINT chk_employement_basic
+	CHECK (basic between 1000  and 90000)
+);
+
+
+
+CREATE TABLE LEAVE 
+(
+
+	LEAVENO NUMBER
+	CONsTARINT PK_LEAVE_LEAVENO PRIMARY KEY,
+	EMPNO NUMBER
+	CONsTRAINT FK_LEAVE_EMPNO REFERENCES EMPLOYENEW(EMPNO),
+	LAVAIL NUMBER,
+	LTAKEN NUMBER,
+	LOP NUMBER
+);
+INSERT INTO EMPLOYEENEW
+
+
+
+select d.deptno,dname ,ename ,sal,hiredate,rank() over(partition order by dname) 
+from dept d inner join emp e on d.deptno=e.deptno;
+
+
+
+
+--------------table created------------------------
+create table employnew
+(
+	empno Number,
+	Name varchar2(5),
+	gender varchar2(10),
+	dept varchar2(30),
+	Basic number(9,2),
+	insertedon Date,
+	insertedby varchar(10)
+);
+
+-----------------alter done------------------------
+Alter table employnew modify name varchar2(30);
+
+
+ alter table leave add_constraint fk_leave_empno
+   foreign key(empno) references empploynew(empno);

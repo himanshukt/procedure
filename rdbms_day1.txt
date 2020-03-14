@@ -1,0 +1,75 @@
+ 1.) Display the last occurence of a given char
+ 2.)
+ 6.) Display all names whose name starts and ends with same char.
+ 7.) Display all names whose first 2 parts starts with same char.
+ 8.) Display the last day of the next month.
+ 9.) Dispplay the last day of the year and the day name
+10.) Add 4 years 5 months and 6 days to sysdate.
+11.) Display all fridays of the current month.
+12.) Display exact age of urs.
+13.) 
+	
+
+
+
+ANSWER
+---------
+ 1.) SELECT LENGTH('SRAVANI')-INSTR(REVERSE('SRAVANI'),'x')+1 AS LEN FROM DUAL;
+
+
+ 2.) SELECT CONCAT(UPPER(SUBSTR(ENAME,1,1)), LOWER(SUBSTR(ENAME ,2))) FROM EMP;
+
+ 3.) SELECT SUBSTR('HIMANSHU KUMAR',1,(INSTR('HIMANSHU KUMAR',' '))) "FIRST_NAME",
+    SUBSTR('HIMANSHU KUMAR',(INSTR('HIMANSHU KUMAR',' '))) "LAST_NAME" FROM DUAL;
+
+ 4.) SELECT LENGTH('MISSIPPI')-LENGTH(REPLACE ('MISSIPPI','I','')) FROM DUAL;
+
+ 5.)SELECT Ed.name
+	FROM
+	(SELECT NAME,LENGTH(NAME)-LENGTH(REPLACE(NAME,' ','')) Wrd FROM EMPLOY)
+	ED
+	WHERE ED.WRD=0;
+ 6.) SELECT NAME FROM EMPLOY WHERE UPPER(SUBSTR(NAME,1,1))=UPPER(SUBSTR(NAME,-1,1));
+
+ 7.) SELECT NAME FROM EMPLOY WHERE UPPER(SUBSTR(NAME,0,1))=UPPER(SUBSTR(NAME,INSTR(NAME,' ')+1,1)) AND INSTR(NAME,' ')>0 ;
+
+
+ 8.) select to_char(last_day(add_months(sysdate,1)),'Day') form dual;
+
+ 9.) SELECT TO_CHAR(LAST_DAY(ADD_MONTHS(SYSDATE,CEIL(TO_CHAR(SYSDATE,'DDD')/30))),'DD/MM/YYYY')||
+	TO_CHAR(LAST_DAY(ADD_MONTHS(SYSDATE,CEIL(TO_CHAR(SYSDATE,'DDD')/30))),'DAY ') FROM DUAL;
+
+10.) SELECT SYSDATE+6*365+30*5+6 FROM DUAL;
+
+
+
+11.)
+
+12.) select floor((sysdate-to_date('19-jan-1997'))/365) as years,
+	floor(mod(floor(sysdate-to_date('19-jan-1997')),365)/30) as months,
+	mod(mod(floor(sysdate-to_date('19-jan-1997')),365),30) as days
+	from dual;
+
+
+
+
+
+
+SELECT Ed.name
+FROM
+(SELECT NAME,LENGTH(NAME)-LENGTH(REPLACE(NAME,' ','')) Wrd FROM EMPLOY)
+ED
+WHERE ED.WRD=0;
+
+
+SELECT NAME FROM EMPLOY
+
+SELECT NAME,SUBSTR(NAME,1,1),
+SUBSTR(NAME,INSTR(NAME,' ')+1,1) 
+FROM EMPLOY
+WHERE SUBSTR(NAME,1,1)=SUBSTR(NAME,INSTR(NAME,' ')+1,1)
+AND INSTR(NAME,' ')!=0;
+
+
+
+

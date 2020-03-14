@@ -1,0 +1,132 @@
+create or replace procedure p
+as
+begin
+	dbms_output.put_line('welcome to a new cosmic');
+end;
+
+create or replace procedure prccal
+(a number,
+b number)
+as begin
+declare
+c number;
+begin
+c:=a+b;
+dbms_output.put_line('sum is '||c);
+end;
+end;
+
+exec prccal(23,34);
+----------------------
+create or replace procedure pe
+(
+	first_name varchar2,
+	last_name varchar2,
+	city varchar2,
+	state varchar2)
+AS
+ begin
+	dbms_output.put_line('first_name '||first_name);
+	dbms_output.put_line('last_name  '||last_name);
+	dbms_output.put_line('city       '||city);
+	dbms_output.put_line('state      '|| state);
+end;
+
+names parameters
+
+exec pe (city => 'delhi', state => 'up',first_name => 'papya',last_name => 'ghosh');
+create or repplace procedure secondsal
+AS begin
+declare basic emp.sal%type;
+begin 
+select max(sal) into basic from emp where sal<(select max(sal) from emp);
+dbms_output.put_line('second max salary is '|| basic);
+end;
+end;
+
+create or replace create or repplace procedure secondsal
+AS begin
+declare basic emp.sal%type;
+begin 
+select max(sal) into basic from emp where sal not in(select max(sal) from emp;);
+dbms_output.put_line('second max salary is '|| basic);
+end;
+end;
+----------------------------------------------------------------------------- 
+create or replace procedure empins( 
+eno employ.empno%type,
+nam employ.name%type,
+dpt employ.dept%type,
+dsg employ.desig%type,
+bas employ.basic%type)
+as begin
+insert into employ values(eno,nam,dpt,dsg,bas);
+exception
+when dup_val_on_index then
+	dbms_output.put_line('already done');
+end;
+--------------------------------------------------------------------------
+create or replace procedure empins( 
+eno employ.empno%type)
+as begin
+insert into employ values(eno,nam,dpt,dsg,bas);
+exception
+when dup_val_on_index then
+	dbms_output.put_line('already done');
+end;
+					
+---------search procedure-----------------------------------------------
+
+
+------------update procedure----------------------------------------
+create or replace procedure prcemployupdate
+	(eno employ.empno%type,
+	nam employ.name%type,
+	dpt employ.dept%type,
+	dsg employ.desig%type,
+	bas employ.basic%type)
+as
+begin
+update employ set name = nvl2(nam,nam,name),
+		   dept = nvl2(dpt,dpt,dept),
+		   desig =nvl2(dsg,dsg,desig),
+		   basic=nvl2(bas,bas,basic)
+	where empno=eno;
+end;
+
+------- all procedure together------------
+create or replace procedure prcSayhello
+AS
+BEGIN
+  dbms_output.put_line('welcome');
+END;
+
+create or replace procedure prcSayBye
+AS
+BEGIN
+  dbms_output.put_line('bye');
+END;	
+
+CREATE or replace procedure PrcExecBoth
+AS
+BEGIN
+    prcSayHello;
+    prcSayBye;
+END;
+----------------------All in one -------------------------------------------------
+
+CREATE or replace procedure PrcExecBoth(C number)
+AS
+BEGIN
+	BEGIN
+		IF C=1 THEN
+    			prcSayHello;
+		END IF;
+		IF C=2 THEN
+    			prcSayBye;
+		END IF;
+	END;
+END;
+
+
+

@@ -1,0 +1,124 @@
+account increasement procesedure
+
+select case when max(accountno) is null then 1
+	else 
+	max(accountno)+1
+	end "accountno" from accounts;
+------------------------create account procedure-----------------
+create or replace procedure PAC
+( 
+	fname Accounts.firstname%type,
+	lname Accounts.lastname%type,
+	city Accounts.city%type,
+	state Accounts.state%type,
+	amount Accounts.amount%type,
+	cf Accounts.cheqfacil%type,
+	atyp Accounts.accounttype%type
+)
+AS BEGIN
+	DECLARE
+	ACCNO NUMBER;
+	BEGIN
+	select case when max(accountno) is null then 1
+	else 
+	max(accountno)+1
+	end INTO ACCNO from accounts;
+	INSERT INTO ACCOUNTS
+	(ACCOUNTNO,FIRSTNAME,LASTNAME,CITY,STATE,AMOUNT,CHEQFACIL,ACCOUNTTYPE) VALUES
+	(ACCNO,FNAME,LNAME,CITY,STATE,AMOUNT,CF,ATYP);
+	DBMS_OUTPUT.PUT_LINE('ACCOUNT CREATED SUCCESSFULLY...');
+	END;
+END;      
+----------------DELETE PROCEDURE------------------------
+CREATE OR REPLACE PROCEDURE ACCDEL( ACCNUM ACCOUNTS.ACCOUNTNO%TYPE)
+AS 
+BEGIN
+	BEGIN
+		DELETE FROM ACCOUNTS WHERE ACCOUNTNO=ACCNUM;
+	END;
+END;
+-----------------UPDATE PROCEDURE-------------------------------
+CREATE OR REPLACE PROCEDURE ACCUPDATE
+(
+	fname Accounts.firstname%type,
+	lname Accounts.lastname%type,
+	city Accounts.city%type,
+	state Accounts.state%type,
+	amount Accounts.amount%type,
+	cf Accounts.cheqfacil%type,
+	atyp Accounts.accounttype%type
+)
+update employ set Fname = nvl2(nam,nam,name),
+		   dept = nvl2(dpt,dpt,dept),
+		   desig =nvl2(dsg,dsg,desig),
+		   basic=nvl2(bas,bas,basic)
+	where empno=eno;
+
+
+
+
+
+
+---------------------TRANSACTION------------------------
+Create Table Trans
+(
+ AccountNo number references accounts(accountNo),
+TranAmount number,
+TranType varchar2(10),
+Trandate date default sysdate
+)
+------------DEPOSIT------------------------------
+create or replace procedure prcAmountDeposit(AccNo Accounts.AccountNo%type,
+				DepAmt Accounts.Amount%type) 
+AS
+BEGIN 
+DECLARE ACCNONOTFOUNDERROR EXCEPTION;
+	BEGIN
+	Update Accounts set Amount=Amount+DepAmt WHERE AccountNo=Accno;
+	Insert into Trans(AccountNo,TranAmount,TranType)
+			values(A
+ccNo,DepAmt,'C');
+IF SQL%NOTFOUND THEN
+RAISE ACCNONOTFOUNDERROR;
+END IF;
+EXCEPTION
+WHEN ACCNONOTFOUNDERROR THEN
+DBMS_OUTPUT.PUT_LINE('aCCOUNT NOT EXISTS...');
+END;
+END;				
+---------------AMOUNT WITHDRAW-------------------------------
+Create Or replace Procedure PrcAmountWithdraw(AccNo Accounts.AccountNo%type,
+				WithAmt Accounts.Amount%type)
+AS
+BEGIN 
+    declare 
+      Amt Accounts.Amount%type;
+	begin 
+		select Amount into Amt from Accounts where accountNo=accno;
+		if(amt-withAmt >= 1000) then
+			Update Accounts set Amount=Amount-WithAmt WHERE AccountNo=Accno;
+	Insert into Trans(AccountNo,TranAmount,TranType)
+			values(AccNo,WithAmt,'D');
+		else 
+			dbms_output.put_line('Insufficient Balance');
+		end if;
+	end;
+END;
+------------ERROR--------------------------------------
+create or replace procedure prcAmountDeposit(AccNo Accounts.AccountNo%type,
+				DepAmt Accounts.Amount%type) 
+AS
+BEGIN 
+DECLARE ACCNONOTFOUNDERROR EXCEPTION;
+	BEGIN
+	Update Accounts set Amount=Amount+DepAmt WHERE AccountNo=Accno;
+	Insert into Trans(AccountNo,TranAmount,TranType)
+			values(AccNo,DepAmt,'C');
+IF SQL%NOTFOUND THEN
+RAISE ACCNONOTFOUNDERROR;
+END IF;
+EXCEPTION
+WHEN ACCNONOTFOUNDERROR THEN
+DBMS_OUTPUT.PUT_LINE('aCCOUNT NOT EXISTS...');
+END;
+END;	

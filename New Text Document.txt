@@ -1,0 +1,33 @@
+ those kind of things happen  isn't it?after the re
+https://github.com/prasanna-hexaware/VirtusaNotes
+https://github.com/prasanna-hexaware/virtusanotes
+SELECT LENGTH('SRAVANI')-INSTR(REVERSE('SRAVANI'),'x')+1 AS LEN FROM DUAL
+
+SELECT 'SARAVANI' CASE WHEN INSTR('SARAVANI','A')>0 THEN LENGTH('SRAVANI')-INSTR(REVERSE('SRAVANI'),'A')+1
+ELSE 0 END "LASTOCCUR" ,FROM DUAL;
+create table employenew
+(
+	Employ Number,
+    	Name varchar2(50), 
+	geneder varchar2(10),
+    	Dept varchar2(30),
+    	Desig varchar2(30),
+    	Basic Number(9,2)
+
+
+
+);
+
+
+
+insert into course values('ora','Oracle database',25,4500,'Windows');
+
+insert into course values('vbnet','VB.NET',30,5500,'Windows and 
+programming');
+
+insert into course values('c','C programming',20,3500,'Computer Awareness');
+
+insert into course values('asp','ASP.NET',25,5000,'Internet and programming');
+
+insert into course values('java','Java Language',25,4500,'C language');
+insert into course values('xml','XML Programming', 15, 4000, 'HTML,Scripting, ASP/JSP');

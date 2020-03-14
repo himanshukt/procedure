@@ -1,0 +1,209 @@
+CREATE OR REPLACE VIEW VWINCSAL
+AS 
+SELECT EMPNO, ENAME ,JOB, SAL,
+CASE JOB
+	WHEN 'CLERK' THEN SAL+500
+	ELSE
+	SAL+800
+	END "INCSAL"
+	FROM EMP;
+
+*****************ELIMINATINATION OF DUPLICATES********************************************
+
+SELECT ED.DEPTNO ,CASE ED.RNO
+WHEN 1 THEN ED.DNAME ELSE ''
+END DNAME ,ED.ENAME,ED.SAL,ED.HIREDATE FROM
+(SELECT D.DEPTNO,DNAME ,ENAME ,SAL,HIREDATE,ROW_NUMBER() OVER(PARTITION BY DNAME ORDER BY DNAME ) RNO
+FROM DEPT D INNER JOIN EMP E ON D.DEPTNO=E.DEPTNO) ED;
+DEPTNO DNAME          ENAME             SAL HIREDATE
+---------- -------------- ---------- ---------- ---------
+        10 ACCOUNTING     MILLER           1300 23-JAN-82
+        10                KING             5000 17-NOV-81
+        10                CLARK            2450 09-JUN-81
+        20 RESEARCH       ADAMS            1100 23-MAY-87
+        20                FORD             3000 03-DEC-81
+        20                JONES            2975 02-APR-81
+        20                SMITH             800 17-DEC-80
+        20                SCOTT            3000 19-APR-87
+        30 SALES          WARD             1250 22-FEB-81
+        30                TURNER           1500 08-SEP-81
+        30                ALLEN            1600 20-FEB-81
+
+    DEPTNO DNAME          ENAME             SAL HIREDATE
+---------- -------------- ---------- ---------- ---------
+        30                JAMES             950 03-DEC-81
+        30                BLAKE            2850 01-MAY-81
+        30                MARTIN           1250 28-SEP-81
+
+
+
+************************************************************************
+
+CREATE VIEW RAMUKAKA AS
+SELECT A.AGENTID ,FIRSTNAME,P.POLICYID,ANNUALPREMIUM FROM
+AGENT A INNER JOIN AGENTPOLICY AP ON A.AGENTID=AP.AGENTID INNER JOIN POLICY P
+ON P.POLICYID =AP.POLICYID;
+
+SELECT AGENID, CASE RNO
+      WHEN 1 THEN FIRSTNAME ELSE ''
+      END FIRSTNAME,POLICYID,ANNUALPREMIUM FROM
+    (SELECT AGENTID,ROW_NUMBER()OVER (PARTITION BY FIRSTNAME ORDER BY FIRSTNAME) AS RNO,POLICYID,ANNUALPREMIUM FROM RAMUKAKA);
+
+		
+
+
+
+*****************PL/SQL**************
+BEGIN
+	DBMS_OUTPUT.PUT_LINE('VIJAY BABU'); 
+END;
+----**********------------
+CREATE TABLE RESTAURANT
+(
+	RID NUMBER PRIMARY KEY,
+	RNAME VARCHAR2(30)
+)
+-------DECLARE VARIABLE----------------------
+DECLARE 
+	NAME VARCHAR2(30):='HIMANSHU';
+BEGIN
+	DBMS_OUTPUT.PUT_LINE('NAME IS '|| NAME); 
+END;
+
+---------------READ DATA------------------
+
+DECLARE 
+	NAME VARCHAR2(30):='&NAME';
+BEGIN
+	DBMS_OUTPUT.PUT_LINE('NAME IS '|| NAME); 
+END;
+--------------SUM OF TWO NUMBER----------
+DECLARE
+N NUMBER(5) :=&N;
+M NUMBER(5) :=&M;
+SU NUMBER(5);
+BEGIN
+	SU:=N+M;
+	DBMS_OUTPUT.PUT_LINE('SUM IS '|| SU);
+END;
+----------------------EMMPM----------------
+DECLARE 
+ENO EMP.EMPNO%TYPE:=7900;
+NAM EMP.ENAME%TYPE;
+BAS EMP.SAL%TYPE;
+BEGIN
+SELECT ENAME,SAL INTO NAM,BAS FROM EMP
+	WHERE EMPNO=ENO;
+	DBMS_OUTPUT.PUT_LINE('NAME IS '|| NAM);
+	DBMS_OUTPUT.PUT_LINE('BAS IS '|| BAS);
+	
+END;
+-------------********-------------EVEN ODD-----------------
+DECLARE 
+N NUMBER(5):=&N;
+BEGIN 
+IF N MOD 2=0 THEN 
+DBMS_OUTPUT.PUT_LINE('EVEN');
+ELSE
+DBMS_OUTPUT.PUT_LINE('ODD');
+END IF;
+END;
+-------------MAX NUMBER-------------------------
+DECLARE
+A NUMBER(5) :=&A;
+B NUMBER(5) :=&B;
+C NUMBER(5) :=&C;
+M NUMBER;
+BEGIN
+M:=A;
+IF M<B THEN M:=B;
+END IF;
+IF M<C THEN M:=C;
+END IF;
+DBMS_OUTPUT.PUT_LINE('MAX NUMBER IS ' || M);
+END;
+
+------------GOOD/BAD SAL--------------------
+DECLARE  
+ENO EMP.EMPNO%TYPE:=7900;
+NAM EMP.ENAME%TYPE;
+BAS EMP.SAL%TYPE;
+BEGIN
+SELECT ENAME,SAL INTO NAM,BAS FROM EMP
+	WHERE EMPNO=ENO;
+	IF BAS>=5000 THEN
+	DBMS_OUTPUT.PUT_LINE('GOOD SAL');
+	ELSE
+	DBMS_OUTPUT.PUT_LINE('INC NEEDED');
+END IF;
+END;
+
+------------------WHILE LOOP--------------------
+DECLARE 
+V_GRADE CHAR(2):='&V_GARDE';
+V_APPRAISAL VARCHAR2(20);
+BEGIN
+V_APPRAISAL:=
+CASE V_GRADE
+WHEN 'A' THEN 'EXCELLENT'
+ELSE
+'NO SUCH GRADE'
+END;
+DBMS_OUTPUT.PUT_LINE('APPARAOISAL IS '|| V_APPARAISAL);
+END;
+----------------WHILE LOOP-------------------
+DECLARE 
+N NUMBER(5):=&N;
+R NUMBER:=0;
+D NUMBER;
+BEGIN
+ WHILE N<>0
+	LOOP
+	D:=N MOD 10;
+	R:=(R*10)+D;
+	N:=FLOOR(N/10);
+ END LOOP;
+	DBMS_OUTPUT.PUT_LINE('REVERSEDBNO IS '|| R);
+END;
+
+------------------FOR LOOP-----------------------
+DECLARE 
+N NUMBER(5):=&N;
+F NUMBER(5):=1;
+I NUMBER(5);
+BEGIN
+	FOR I IN 1..N LOOP
+	F:=F*I;
+	END LOOP;
+dbms_output.put_line('factorial is '|| F);
+end;
+-------------------reverse for loop-----------
+DECLARE 
+N NUMBER(5):=&N;
+F NUMBER(5):=1;
+I NUMBER(5);
+BEGIN
+	FOR I IN reverse 1..N LOOP
+	F:=F*I;
+	dbms_output.put_line('factorial is '|| I);
+	END LOOP;
+dbms_output.put_line('factorial is '|| F);
+end;
+
+----------------exit ---------------
+declare 
+n number(5):=&n;
+i number;
+begin i:=0;
+loop 
+i
+
+
+--------------CO RELATED SUBQUERY---------------------
+SELECT Ename, sal FROM Emp e1 WHERE 2 = (SELECT COUNT(DISTINCT saL) FROM Emp e2 WHERE e2.sal > e1.sal);
+
+
+
+
+
+
